@@ -6,9 +6,12 @@ const canvas = document.getElementById("canvas"),
 
 let w = canvas.width = window.innerWidth,
     h = canvas.height = window.innerHeight;
+<<<<<<< HEAD
 
 c.imageSmoothingEnabled = false; 
 
+=======
+>>>>>>> 8f1d6253a2a96ad7b2c904cf6d0925d5c4fa0b70
 c.fillStyle = "#000";
 c.fillRect(0,0, w, h);
 
