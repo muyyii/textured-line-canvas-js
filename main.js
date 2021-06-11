@@ -34,13 +34,25 @@ window.addEventListener('mousemove', e => {
 });
 */
 
+let drag,click;
+
+document.onmouseup = function(e){
+	drag = click = false;
+}
+
+document.onmousedown = function(e){
+	click = true;
+}
+
 document.onmousemove = function(e) {
-  
-  var event = e || window.event;
-  mx = event.clientX;
-  my = event.clientY;
-  c.fillStyle = "#fff";
-  bLine(400, 150, mx, my);
+	var event = e || window.event;
+  	mx = event.clientX;
+  	my = event.clientY;
+  	c.fillStyle = "#fff";
+	calc = Math.sqrt((400-mx)*(400-mx)+(150-my)*(150-my)) 
+	if(click){
+		if(calc<145)bLine(400, 150, mx, my);
+	}
 }
 
 // let favColor = "#0099cc";
