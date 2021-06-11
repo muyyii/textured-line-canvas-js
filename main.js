@@ -17,7 +17,12 @@ textureMap.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABz
 
 c.imageSmoothingEnabled = 0;
 c.drawImage(textureMap, 10, 10);
-c.drawImage(textureMap, 10, 50, 200, 200);
+
+bLine(12,12,38,21);
+bLine(30, 12, 30, 30);
+
+//let imgData1 = c.getImageData(10,10, 32, 24);
+c.drawImage(canvas, 10, 10, 32, 32, 10, 10, 200, 200);
 
 //---- There sure are better ways to approach this but mine will use imageData.
 //---- following this line algorith cause I'm too lazy to think my own 
@@ -34,7 +39,15 @@ window.addEventListener('mousemove', e => {
 });
 */
 
+// Check radial distance betwen 2 points and a range
+function checkDist(x1, y1, x2, y2, r){
+	let distance = Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+	if(distance < r) return true;
+	else return false;
+}
+
 let drag,click;
+let spiral = {x:130, y:300};
 
 document.onmouseup = function(e){
 	drag = click = false;
@@ -49,9 +62,13 @@ document.onmousemove = function(e) {
   	mx = event.clientX;
   	my = event.clientY;
   	c.fillStyle = "#fff";
-	calc = Math.sqrt((400-mx)*(400-mx)+(150-my)*(150-my)) 
 	if(click){
-		if(calc<145)bLine(400, 150, mx, my);
+		if(checkDist(400, 150, mx, my, 145))bLine(400, 150, mx, my);
+		if(checkDist(spiral.x, spiral.y, mx, my, 30)){
+			spiral.x = mx;
+			spiral.y = my;
+			drawSpiral();
+		}
 	}
 }
 
@@ -87,17 +104,19 @@ function getArcCoord(x,y,r,angle){
   fx = x + Math.cos(angle)*r;
   fy = y - Math.sin(angle)*r;
   
-  return {x:fx, y:fy};
+  return {x:Math.round(fx), y:Math.round(fy)};
 }
 
-for(let i=0; i<=20; i++){
-	
-	let arc = (2*3.1415)/20;
-	let angle = i*arc;
-	let xf = Math.round(130 + Math.cos(angle)*20);
-	let yf = Math.round(300 - Math.sin(angle)*20);
-	bLine(130, 300, xf, yf);
+function drawSpiral(){
+	for(let i=0; i<=20; i++){
+		let arc = (2*3.1415)/20;
+		let angle = i*arc;
+		let final = getArcCoord(spiral.x, spiral.y, 20, angle)
+		bLine(spiral.x, spiral.y, final.x, final.y);
+	}
 }
+
+drawSpiral();
 
 //bLine(130, 300, 130, 300+20);
 //final = getArcCoord(30, 200, 20, 0.02);
