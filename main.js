@@ -16,13 +16,15 @@ let textureMap = new Image();
 textureMap.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACRklEQVRYhe2VPWgTYRjHf0lTQw2BowRUsHBdgpMgGAmHtGRIKwXBr4Idqu0mmIBj3R1KJyEWqoOGZigiFMGlpUM0w3FouxRduvSGQgmEcjTWmn4Qh/O95i7JXdTidD84Xp7n7uX/fN37BpZ3J+sAumoAoClPATBUDYC3l1QADvoWAJgYHALg47cNAAav3cSNT58/oFd05Jjccg257u6Qq+cut/SvltddxeWYTGhorQrAz/cxAOL5FwBoZ64DMFY2/TdG5oCTzJ08OfvFZj//kQBwFdcrOsF/ydxJ11SVrqmqzedZgb2Bd+aXA+aSwL46Gcs8stkPR7KuQXlV4FRmQHA8HW3yeVZATHU7hkfvdCQueu7kv1Rgtbze9p1XBQIvl27XZUUitbNPsbeH1M6+tbnY28OcesWyJSVpnQ+SkgTg9dqMa3D3ps+7vg/JimSJ6arBGyCej7IxUQVqlmghnSW7Z/5qhbQ5eMI+7G8uZPfmkauwIKirBuIBWHn2HX4HIRCCIvvxlZzNBvOkPOhboHvzqGNxgMDy7mRdVw2bYFIKAzB/q8ISKVsgQlywGC65Cni1ICjEhWhSCjP+VUczarag4CRzSUlaTysO+0NY54sHwXg+yuzWtiWuGTUeX7zQ9KGkJCmks1Y7cpGE1QKn4B+1oHj/Qd3pnN3atoKYf5UhF0lYAwf23i+GS65D6PkXNIqJSjQGcqxqkE40CQtE5pHSqKtQOwJ3hzNNFWik3VUrcDuEOtl/qrfh3+AH4AfgB+Dj4+PzC7evLNqIHdYjAAAAAElFTkSuQmCC";
 
 c.imageSmoothingEnabled = 0;
-c.drawImage(textureMap, 10, 10);
 
-bLine(12,12,38,21);
-bLine(30, 12, 30, 30);
+textureMap.onload = function(){
+	c.drawImage(textureMap, 10, 10);
+	bLine(12,12,38,21);
+	bLine(30, 12, 30, 30);
+	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
+}
 
 //let imgData1 = c.getImageData(10,10, 32, 24);
-c.drawImage(canvas, 10, 10, 32, 32, 10, 10, 200, 200);
 
 //---- There sure are better ways to approach this but mine will use imageData.
 //---- following this line algorith cause I'm too lazy to think my own 
