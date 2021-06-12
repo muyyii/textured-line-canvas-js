@@ -19,15 +19,23 @@ let loadedImg = false;
 let spLine = {x1:12, y1:12, x2:30, y2:17};
 let buttons = [{x:85, y:135},{x:197, y:166}];
 
-textureMap.onload = paintBack();
-
-
-function paintBack(){
+textureMap.onload = function(){
 	c.drawImage(textureMap, 10, 10);
 	bLine(spLine.x1 + 10, spLine.y1 + 10, spLine.x2 + 10, spLine.y2 + 10);
 	bLine(44, 10, 44, 34);
 	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
 	loadedImg = true;
+	drawButtons();
+}
+
+
+function paintBack(){
+	c.fillStyle = "#000";
+	c.fillRect(0,0,270, 220);
+	c.drawImage(textureMap, 10, 10);
+	bLine(spLine.x1 + 10, spLine.y1 + 10, spLine.x2 + 10, spLine.y2 + 10);
+	bLine(44, 10, 44, 34);
+	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
 }
 
 //let imgData1 = c.getImageData(10,10, 32, 24);
@@ -37,7 +45,7 @@ function paintBack(){
 //---- https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 
 function dCircle(x, y, r){
-	c.fillStyle = "#0099cc";
+	c.fillStyle = "#55bbff";
 	c.beginPath();
 	c.arc(x, y, r, 0, Math.PI*2, false);
 	c.fill();
@@ -83,12 +91,6 @@ document.onmousemove = function(e) {
   	my = event.clientY;
   	c.fillStyle = "#fff";
 	if(click){
-		if(checkDist(400, 150, mx, my, 145))bLine(400, 150, mx, my);
-		if(checkDist(spiral.x, spiral.y, mx, my, 30)){
-			spiral.x = mx;
-			spiral.y = my;
-			drawSpiral();
-		}
 		for(let i=0; i<buttons.length;i++){
 			if(checkDist(buttons[i].x, buttons[i].y, mx, my, 10)) drag=i+1;
 		}
@@ -109,6 +111,12 @@ document.onmousemove = function(e) {
 		}
 		if(loadedImg) paintBack();
 		drawButtons();
+		if(checkDist(400, 150, mx, my, 145))bLine(400, 150, mx, my);
+		if(checkDist(spiral.x, spiral.y, mx, my, 30)){
+			spiral.x = mx;
+			spiral.y = my;
+			drawSpiral();
+		}
 
 	}
 }
@@ -158,7 +166,6 @@ function drawSpiral(){
 }
 
 drawSpiral();
-drawButtons();;
 
 
 
