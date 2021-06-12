@@ -15,13 +15,18 @@ c.fillRect(0,0, w, h);
 let textureMap = new Image();
 textureMap.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACRklEQVRYhe2VPWgTYRjHf0lTQw2BowRUsHBdgpMgGAmHtGRIKwXBr4Idqu0mmIBj3R1KJyEWqoOGZigiFMGlpUM0w3FouxRduvSGQgmEcjTWmn4Qh/O95i7JXdTidD84Xp7n7uX/fN37BpZ3J+sAumoAoClPATBUDYC3l1QADvoWAJgYHALg47cNAAav3cSNT58/oFd05Jjccg257u6Qq+cut/SvltddxeWYTGhorQrAz/cxAOL5FwBoZ64DMFY2/TdG5oCTzJ08OfvFZj//kQBwFdcrOsF/ydxJ11SVrqmqzedZgb2Bd+aXA+aSwL46Gcs8stkPR7KuQXlV4FRmQHA8HW3yeVZATHU7hkfvdCQueu7kv1Rgtbze9p1XBQIvl27XZUUitbNPsbeH1M6+tbnY28OcesWyJSVpnQ+SkgTg9dqMa3D3ps+7vg/JimSJ6arBGyCej7IxUQVqlmghnSW7Z/5qhbQ5eMI+7G8uZPfmkauwIKirBuIBWHn2HX4HIRCCIvvxlZzNBvOkPOhboHvzqGNxgMDy7mRdVw2bYFIKAzB/q8ISKVsgQlywGC65Cni1ICjEhWhSCjP+VUczarag4CRzSUlaTysO+0NY54sHwXg+yuzWtiWuGTUeX7zQ9KGkJCmks1Y7cpGE1QKn4B+1oHj/Qd3pnN3atoKYf5UhF0lYAwf23i+GS65D6PkXNIqJSjQGcqxqkE40CQtE5pHSqKtQOwJ3hzNNFWik3VUrcDuEOtl/qrfh3+AH4AfgB+Dj4+PzC7evLNqIHdYjAAAAAElFTkSuQmCC";
 
-c.imageSmoothingEnabled = 0;
+let loadedImg = false;
+let spLine = {x1:12, y1:12, x2:40, y2:17};
 
-textureMap.onload = function(){
+textureMap.onload = paintBack();
+
+
+function paintBack(){
 	c.drawImage(textureMap, 10, 10);
-	bLine(12,12,38,21);
-	bLine(30, 12, 30, 30);
+	bLine(spLine.x1, spLine.y1, spLine.x2, spLine.y2);
+	bLine(44, 10, 44, 34);
 	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
+	loadedImg = true;
 }
 
 //let imgData1 = c.getImageData(10,10, 32, 24);
@@ -30,16 +35,18 @@ textureMap.onload = function(){
 //---- following this line algorith cause I'm too lazy to think my own 
 //---- https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 
-/*
-window.addEventListener('mousemove', e => {
-  
-  mx = e.offsetX | 450;
-  my = e.offsetY | 500;
-    
-  c.fillRect(mx, my, 40, 40);
-   //line(400, 200, mx, my);
-});
-*/
+function dCircle(x, y, r){
+	c.fillStyle = "#0099cc";
+	c.beginPath();
+	c.arc(x, y, r, 0, Math.PI*2, false);
+	c.fill();
+}
+
+function drawButtons(){
+	for(let i=0; i<buttons.length; i++){
+		dCircle(buttons[i].x, buttons[i].y, 10);
+	}
+}
 
 // Check radial distance betwen 2 points and a range
 function checkDist(x1, y1, x2, y2, r){
@@ -48,8 +55,19 @@ function checkDist(x1, y1, x2, y2, r){
 	else return false;
 }
 
+function getCoordFromArea(xi, yi, xl, yl, resx, resy, x, y){
+	let xd = xl - xi;
+	let yd = yl - yi;
+	let xx = x - xi;
+	let yy = y - yi;
+	let xn = Math.floor(resx*xx/xd)
+	let yn = Math.floor(resy*yy/yd)
+	return {x:xn, y:yn}
+}
+
 let drag,click;
 let spiral = {x:130, y:300};
+let buttons = [{x:40, y:30},{x:50, y:70}];
 
 document.onmouseup = function(e){
 	drag = click = false;
@@ -71,6 +89,27 @@ document.onmousemove = function(e) {
 			spiral.y = my;
 			drawSpiral();
 		}
+		for(let i=0; i<buttons.length;i++){
+			if(checkDist(buttons[i].x, buttons[i].y, mx, my, 10)) drag=i+1;
+		}
+		if(drag){
+			buttons[drag-1].x = mx;
+			buttons[drag-1].y = my;
+			if(mx > 10 && mx < 210 && my > 60 && my < 260){
+				if(drag-1==0){
+					let transform = getCoordFromArea(10, 60, 210, 260, 32, 32, mx, my);
+					spLine.x1 = transform.x + 10;
+					spLine.y1 = transform.y + 10;
+				}else{
+					let transform = getCoordFromArea(10, 60, 210, 260, 32, 32, mx, my);
+					spLine.x2 = transform.x + 10;
+					spLine.y2 = transform.y + 10;
+				}
+			}
+		}
+		if(loadedImg) paintBack();
+		drawButtons();
+
 	}
 }
 
@@ -119,9 +158,6 @@ function drawSpiral(){
 }
 
 drawSpiral();
-
-//bLine(130, 300, 130, 300+20);
-//final = getArcCoord(30, 200, 20, 0.02);
 
 
 
