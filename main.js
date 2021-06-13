@@ -15,12 +15,15 @@ c.fillRect(0,0, w, h);
 let textureMap = new Image();
 textureMap.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACRklEQVRYhe2VPWgTYRjHf0lTQw2BowRUsHBdgpMgGAmHtGRIKwXBr4Idqu0mmIBj3R1KJyEWqoOGZigiFMGlpUM0w3FouxRduvSGQgmEcjTWmn4Qh/O95i7JXdTidD84Xp7n7uX/fN37BpZ3J+sAumoAoClPATBUDYC3l1QADvoWAJgYHALg47cNAAav3cSNT58/oFd05Jjccg257u6Qq+cut/SvltddxeWYTGhorQrAz/cxAOL5FwBoZ64DMFY2/TdG5oCTzJ08OfvFZj//kQBwFdcrOsF/ydxJ11SVrqmqzedZgb2Bd+aXA+aSwL46Gcs8stkPR7KuQXlV4FRmQHA8HW3yeVZATHU7hkfvdCQueu7kv1Rgtbze9p1XBQIvl27XZUUitbNPsbeH1M6+tbnY28OcesWyJSVpnQ+SkgTg9dqMa3D3ps+7vg/JimSJ6arBGyCej7IxUQVqlmghnSW7Z/5qhbQ5eMI+7G8uZPfmkauwIKirBuIBWHn2HX4HIRCCIvvxlZzNBvOkPOhboHvzqGNxgMDy7mRdVw2bYFIKAzB/q8ISKVsgQlywGC65Cni1ICjEhWhSCjP+VUczarag4CRzSUlaTysO+0NY54sHwXg+yuzWtiWuGTUeX7zQ9KGkJCmks1Y7cpGE1QKn4B+1oHj/Qd3pnN3atoKYf5UhF0lYAwf23i+GS65D6PkXNIqJSjQGcqxqkE40CQtE5pHSqKtQOwJ3hzNNFWik3VUrcDuEOtl/qrfh3+AH4AfgB+Dj4+PzC7evLNqIHdYjAAAAAElFTkSuQmCC";
 
+let textureData;
+let colors;
 let loadedImg = false;
 let spLine = {x1:12, y1:12, x2:30, y2:17};
 let buttons = [{x:85, y:135},{x:197, y:166}];
 
 textureMap.onload = function(){
 	c.drawImage(textureMap, 10, 10);
+	textureData = c.getImageData(10, 10, 42, 42);
 	bLine(spLine.x1 + 10, spLine.y1 + 10, spLine.x2 + 10, spLine.y2 + 10);
 	bLine(44, 10, 44, 34);
 	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
@@ -28,6 +31,51 @@ textureMap.onload = function(){
 	drawButtons();
 }
 
+
+function getLineColors(x0, y0, x1, y1){
+	let data = [];
+	let r,g,b;
+	let dx = Math.abs(x1-x0);
+  	let dy = -Math.abs(y1-y0);
+
+	let sx = x0<x1 ? 1 : -1;
+	let sy = y0<y1 ? 1 : -1;
+
+	let err = dx+dy;  /* error value e_xy */
+	while (true){     /* loop */
+
+		r = textureData.data[y0 * (32 * 4)+ x0 * 4];
+		g = textureData.data[y0 * (32 * 4)+ x0 * 4 + 1];
+		b = textureData.data[y0 * (32 * 4)+ x0 * 4 + 2];
+
+		data.push({r,g,b});
+
+		if (x0 == x1 && y0 == y1) break;
+		e2 = 2*err;
+		if (e2 >= dy){ /* e_xy+e_x > 0 */
+			err += dy;
+			x0 += sx;
+		}
+		if (e2 <= dx){ /* e_xy+e_y < 0 */
+			err += dx;
+			y0 += sy;
+		}
+	}
+
+	return data;
+}
+
+function drawRapido(colData){
+	c.fillStyle = "#000";
+	c.fillRect(300,90,10,400);
+	for(let i=0; i<colData.length; i++){
+		r = colData[i].r;
+		g = colData[i].g;
+		b = colData[i].b;
+		c.fillStyle = "rgb("+ r +"," + g + ","+ b +")";
+		c.fillRect(300,90+10*i,10, 10);
+	}
+}
 
 function paintBack(){
 	c.fillStyle = "#000";
@@ -89,7 +137,6 @@ document.onmousemove = function(e) {
 	var event = e || window.event;
   	mx = event.clientX;
   	my = event.clientY;
-  	c.fillStyle = "#fff";
 	if(click){
 		for(let i=0; i<buttons.length;i++){
 			if(checkDist(buttons[i].x, buttons[i].y, mx, my, 10)) drag=i+1;
@@ -109,15 +156,19 @@ document.onmousemove = function(e) {
 				}
 			}
 		}
-		if(loadedImg) paintBack();
+		if(loadedImg) {
+			paintBack();
+			colores = getLineColors(spLine.x1, spLine.y1, spLine.x2, spLine.y2);
+			drawRapido(colores);
+		}
 		drawButtons();
+		//bLine(500, 20, mx, my);
 		if(checkDist(400, 150, mx, my, 145))bLine(400, 150, mx, my);
 		if(checkDist(spiral.x, spiral.y, mx, my, 30)){
 			spiral.x = mx;
 			spiral.y = my;
 			drawSpiral();
 		}
-
 	}
 }
 
