@@ -23,7 +23,7 @@ let buttons = [{x:85, y:135},{x:197, y:166}];
 
 textureMap.onload = function(){
 	c.drawImage(textureMap, 10, 10);
-	textureData = c.getImageData(10, 10, 42, 42);
+	textureData = c.getImageData(10, 10, 32, 32);
 	bLine(spLine.x1 + 10, spLine.y1 + 10, spLine.x2 + 10, spLine.y2 + 10);
 	bLine(44, 10, 44, 34);
 	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
@@ -65,15 +65,15 @@ function getLineColors(x0, y0, x1, y1){
 	return data;
 }
 
-function drawRapido(colData){
+function drawRapido(x,colData){
 	c.fillStyle = "#000";
-	c.fillRect(300,90,10,400);
+	c.fillRect(300+x,90,10,200);
 	for(let i=0; i<colData.length; i++){
 		r = colData[i].r;
 		g = colData[i].g;
 		b = colData[i].b;
 		c.fillStyle = "rgb("+ r +"," + g + ","+ b +")";
-		c.fillRect(300,90+10*i,10, 10);
+		c.fillRect(300+x,90+10*i,10, 10);
 	}
 }
 
@@ -85,8 +85,6 @@ function paintBack(){
 	bLine(44, 10, 44, 34);
 	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
 }
-
-//let imgData1 = c.getImageData(10,10, 32, 24);
 
 //---- There sure are better ways to approach this but mine will use imageData.
 //---- following this line algorith cause I'm too lazy to think my own 
@@ -159,7 +157,9 @@ document.onmousemove = function(e) {
 		if(loadedImg) {
 			paintBack();
 			colores = getLineColors(spLine.x1, spLine.y1, spLine.x2, spLine.y2);
-			drawRapido(colores);
+			drawRapido(0, colores);
+			drawRapido(10, getLineColors(0,0,32,32));
+			drawRapido(20, getLineColors(16,16,0,0));
 		}
 		drawButtons();
 		//bLine(500, 20, mx, my);
