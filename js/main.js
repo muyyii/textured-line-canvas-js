@@ -1,5 +1,7 @@
 // https://twitter.com/zovirl/status/1324155476863459329?s=21
 
+console.log("This didn't updated");
+
 //---- Setting up straightforward canvas
 const canvas = document.getElementById("canvas"),
       c = canvas.getContext("2d");
@@ -12,8 +14,8 @@ c.imageSmoothingEnabled = false;
 c.fillStyle = "#000";
 c.fillRect(0,0, w, h);
 
-let textureMap = new Image();
-textureMap.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACRklEQVRYhe2VPWgTYRjHf0lTQw2BowRUsHBdgpMgGAmHtGRIKwXBr4Idqu0mmIBj3R1KJyEWqoOGZigiFMGlpUM0w3FouxRduvSGQgmEcjTWmn4Qh/O95i7JXdTidD84Xp7n7uX/fN37BpZ3J+sAumoAoClPATBUDYC3l1QADvoWAJgYHALg47cNAAav3cSNT58/oFd05Jjccg257u6Qq+cut/SvltddxeWYTGhorQrAz/cxAOL5FwBoZ64DMFY2/TdG5oCTzJ08OfvFZj//kQBwFdcrOsF/ydxJ11SVrqmqzedZgb2Bd+aXA+aSwL46Gcs8stkPR7KuQXlV4FRmQHA8HW3yeVZATHU7hkfvdCQueu7kv1Rgtbze9p1XBQIvl27XZUUitbNPsbeH1M6+tbnY28OcesWyJSVpnQ+SkgTg9dqMa3D3ps+7vg/JimSJ6arBGyCej7IxUQVqlmghnSW7Z/5qhbQ5eMI+7G8uZPfmkauwIKirBuIBWHn2HX4HIRCCIvvxlZzNBvOkPOhboHvzqGNxgMDy7mRdVw2bYFIKAzB/q8ISKVsgQlywGC65Cni1ICjEhWhSCjP+VUczarag4CRzSUlaTysO+0NY54sHwXg+yuzWtiWuGTUeX7zQ9KGkJCmks1Y7cpGE1QKn4B+1oHj/Qd3pnN3atoKYf5UhF0lYAwf23i+GS65D6PkXNIqJSjQGcqxqkE40CQtE5pHSqKtQOwJ3hzNNFWik3VUrcDuEOtl/qrfh3+AH4AfgB+Dj4+PzC7evLNqIHdYjAAAAAElFTkSuQmCC";
+//let textureMap = new Image();
+//textureMap.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACRklEQVRYhe2VPWgTYRjHf0lTQw2BowRUsHBdgpMgGAmHtGRIKwXBr4Idqu0mmIBj3R1KJyEWqoOGZigiFMGlpUM0w3FouxRduvSGQgmEcjTWmn4Qh/O95i7JXdTidD84Xp7n7uX/fN37BpZ3J+sAumoAoClPATBUDYC3l1QADvoWAJgYHALg47cNAAav3cSNT58/oFd05Jjccg257u6Qq+cut/SvltddxeWYTGhorQrAz/cxAOL5FwBoZ64DMFY2/TdG5oCTzJ08OfvFZj//kQBwFdcrOsF/ydxJ11SVrqmqzedZgb2Bd+aXA+aSwL46Gcs8stkPR7KuQXlV4FRmQHA8HW3yeVZATHU7hkfvdCQueu7kv1Rgtbze9p1XBQIvl27XZUUitbNPsbeH1M6+tbnY28OcesWyJSVpnQ+SkgTg9dqMa3D3ps+7vg/JimSJ6arBGyCej7IxUQVqlmghnSW7Z/5qhbQ5eMI+7G8uZPfmkauwIKirBuIBWHn2HX4HIRCCIvvxlZzNBvOkPOhboHvzqGNxgMDy7mRdVw2bYFIKAzB/q8ISKVsgQlywGC65Cni1ICjEhWhSCjP+VUczarag4CRzSUlaTysO+0NY54sHwXg+yuzWtiWuGTUeX7zQ9KGkJCmks1Y7cpGE1QKn4B+1oHj/Qd3pnN3atoKYf5UhF0lYAwf23i+GS65D6PkXNIqJSjQGcqxqkE40CQtE5pHSqKtQOwJ3hzNNFWik3VUrcDuEOtl/qrfh3+AH4AfgB+Dj4+PzC7evLNqIHdYjAAAAAElFTkSuQmCC";
 
 let textureData;
 let colores = false;
