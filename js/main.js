@@ -1,6 +1,5 @@
 // https://twitter.com/zovirl/status/1324155476863459329?s=21
 
-console.log("This didn't updated");
 
 //---- Setting up straightforward canvas
 const canvas = document.getElementById("canvas"),
@@ -19,6 +18,7 @@ let colores = false;
 let loadedImg = false;
 let spLine = {x1:12, y1:12, x2:30, y2:17};
 let buttons = [{x:85, y:135},{x:197, y:166}];
+let drag,click;
 
 textureMap.onload = function(){
 	c.drawImage(textureMap, 10, 10);
@@ -29,7 +29,6 @@ textureMap.onload = function(){
 	loadedImg = true;
 	drawButtons();
 }
-
 
 function getLineColors(x0, y0, x1, y1){
 	let data = [];
@@ -119,7 +118,6 @@ function getCoordFromArea(xi, yi, xl, yl, resx, resy, x, y){
 	return {x:xn, y:yn}
 }
 
-let drag,click;
 let spiral = {x:130, y:300};
 
 document.onmouseup = function(e){
@@ -171,7 +169,6 @@ document.onmousemove = function(e) {
 	}
 }
 
-// let favColor = "#0099cc";
 function bLine(x0, y0, x1, y1, cData = false){
 	let dx = Math.abs(x1-x0);
 	let dy = -Math.abs(y1-y0);
@@ -229,7 +226,3 @@ function drawSpiral(cData){
 }
 
 drawSpiral();
-
-
-
-
