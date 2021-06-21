@@ -1,34 +1,43 @@
 // https://twitter.com/zovirl/status/1324155476863459329?s=21
 
-
-//---- Setting up straightforward canvas
-const canvas = document.getElementById("canvas"),
-      c = canvas.getContext("2d");
-
-let w = canvas.width = window.innerWidth,
-    h = canvas.height = window.innerHeight;
-
-c.imageSmoothingEnabled = false; 
-
-c.fillStyle = "#000";
-c.fillRect(0,0, w, h);
-
+let canvas, c, w, h;
+let loaded = false;
 let textureData;
 let colores = false;
 let loadedImg = false;
 let spLine = {x1:12, y1:12, x2:30, y2:17};
 let buttons = [{x:85, y:135},{x:197, y:166}];
 let drag,click;
+let spiral = {x:130, y:300};
 
-textureMap.onload = function(){
+
+window.onload = (event) => {
+	loaded = true;
+	
+	//---- Setting up straightforward canvas
+	canvas = document.getElementById("canvas");
+	c = canvas.getContext("2d");
+
+	w = canvas.width = window.innerWidth;
+	h = canvas.height = window.innerHeight;
+
+	c.imageSmoothingEnabled = false; 
+
+	c.fillStyle = "#000";
+	c.fillRect(0,0, w, h);
 	c.drawImage(textureMap, 10, 10);
+	
 	textureData = c.getImageData(10, 10, 32, 32);
+	
 	bLine(spLine.x1 + 10, spLine.y1 + 10, spLine.x2 + 10, spLine.y2 + 10);
-	bLine(44, 10, 44, 34);
+	
 	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
+	
 	loadedImg = true;
+	
 	drawButtons();
-}
+	drawSpiral();
+};
 
 function getLineColors(x0, y0, x1, y1){
 	let data = [];
@@ -65,7 +74,7 @@ function getLineColors(x0, y0, x1, y1){
 
 function drawRapido(x,colData){
 	c.fillStyle = "#000";
-	c.fillRect(300+x,90,10,200);
+	c.fillRect(300+x,90,10,10*32);
 	for(let i=0; i<colData.length; i++){
 		r = colData[i].r;
 		g = colData[i].g;
@@ -80,7 +89,6 @@ function paintBack(){
 	c.fillRect(0,0,270, 220);
 	c.drawImage(textureMap, 10, 10);
 	bLine(spLine.x1 + 10, spLine.y1 + 10, spLine.x2 + 10, spLine.y2 + 10);
-	bLine(44, 10, 44, 34);
 	c.drawImage(canvas, 10, 10, 32, 32, 10, 60, 200, 200);
 }
 
@@ -101,8 +109,8 @@ function drawButtons(){
 	}
 }
 
-// Check radial distance betwen 2 points and a range
 function checkDist(x1, y1, x2, y2, r){
+	// Check radial distance betwen 2 points and a range
 	let distance = Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 	if(distance < r) return true;
 	else return false;
@@ -117,8 +125,6 @@ function getCoordFromArea(xi, yi, xl, yl, resx, resy, x, y){
 	let yn = Math.floor(resy*yy/yd)
 	return {x:xn, y:yn}
 }
-
-let spiral = {x:130, y:300};
 
 document.onmouseup = function(e){
 	drag = click = false;
@@ -155,8 +161,6 @@ document.onmousemove = function(e) {
 			paintBack();
 			colores = getLineColors(spLine.x1, spLine.y1, spLine.x2, spLine.y2);
 			drawRapido(0, colores);
-			drawRapido(10, getLineColors(0,0,32,32));
-			drawRapido(20, getLineColors(16,16,0,0));
 			if(checkDist(400, 150, mx, my, 145))bLine(400, 150, mx, my, colores);
 		
 			if(checkDist(spiral.x, spiral.y, mx, my, 30)){
@@ -225,4 +229,3 @@ function drawSpiral(cData){
 	}
 }
 
-drawSpiral();
