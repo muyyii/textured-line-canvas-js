@@ -220,6 +220,10 @@ function getArcCoord(x,y,r,angle){
   return {x:Math.round(fx), y:Math.round(fy)};
 }
 
+function component(){
+
+}
+
 function drawSpiral(cData){
 	for(let i=0; i<=20; i++){
 		let arc = (2*3.1415)/20;
